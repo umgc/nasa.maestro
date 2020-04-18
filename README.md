@@ -32,6 +32,7 @@ James Montalvo
 - Beatrice Oluwabuyi
 - Jacquetta Reid
 - Kenya Foster
+- Tiezheng Yuan
 
 TBD
 
