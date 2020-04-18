@@ -3,7 +3,7 @@ import fs from 'fs';
 import path from 'path';
 import chai from 'chai';
 const expect = chai.expect;
-import CheckFile from '../src/checkFile.js';
+import CheckFile from '../src/server/checkFile.js';
 var app = new CheckFile();
 const __dirname = path.resolve();
 
@@ -12,21 +12,18 @@ const out = path.join(__dirname, 'projects/sts-65/STS-134_EVA_1.docx');
 // console.log(path.parse(DOCX));
 const nDOCX = path.join(__dirname, '/test/STS-134_EVA_wrong.docx');
 
-describe('test copying of file', function() {
+describe('test copying of file', function () {
+  it('should copy docx', function () {
+    app.copyFile(DOCX, out).then((result) => {
+      // console.log(result);
+      expect(result).to.be.ok;
+    });
+  }); //
 
-	it('should copy docx', function() {
-		app.copyFile(DOCX, out)
-			.then((result) => {
-				// console.log(result);
-				expect(result).to.be.ok;
-			});
-	});//
-
-	it('should not copy docx', function() {
-		app.copyFile(nDOCX, out)
-			.then((result) => {
-				// console.log(result);
-				expect(result).to.be.false;
-			});
-	});//
+  it('should not copy docx', function () {
+    app.copyFile(nDOCX, out).then((result) => {
+      // console.log(result);
+      expect(result).to.be.false;
+    });
+  }); //
 });
