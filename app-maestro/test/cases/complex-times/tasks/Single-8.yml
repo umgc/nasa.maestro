@@ -1,0 +1,11 @@
+title: Single 8
+
+roles:
+
+  - name: crewA
+    duration:
+      minutes: 79
+
+steps:
+
+  - crewA: Do stuff

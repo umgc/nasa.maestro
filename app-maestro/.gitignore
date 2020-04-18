@@ -1,0 +1,13 @@
+.DS_Store
+**/*.docx
+**/.nyc_output/
+**/coverage/
+**/node_modules/
+*.sw*
+**/api-docs/
+test/cases/**/build
+build/*
+
+**/uploads/**
+**/dist/**
+**/samples/**

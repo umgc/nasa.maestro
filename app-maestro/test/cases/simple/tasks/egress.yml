@@ -1,0 +1,46 @@
+title: EGRESS/SETUP
+
+roles:
+  - name: crewA
+    description: A description
+    duration:
+      minutes: 25
+  - name: crewB
+    description: asdf
+    duration:
+      minutes: 25
+
+steps:
+
+  - crewA:
+    - step: step 1
+    - step: step 1a
+  - crewB: step 2
+  - IV: step 3
+  - simo:
+      IV: step 4
+      crewA: step 5
+      crewB: step 6
+  - simo:
+      IV: step 7
+      crewB: step 8
+  - crewA + crewB:
+    - step: step 9
+    - step: step 10
+  - simo:
+      crewA + IV: step 11
+      crewB:
+        - step: step 12
+        - step: step 13
+
+  # Row for testing StepModules
+  - simo:
+      crewA:
+        - pgt.set: B7, CCW2
+        - pgt.set: B1, CCW1, 6" Wobble
+        - pgt.set: A7, CW2, 30.5
+        - pgt.set: B7, CW2, 2.5
+        # - pgt.set: B7, CCW4
+        - apfr.install:
+            settings: 12, PP, F, 6
+            wif: P6 WIF 11
