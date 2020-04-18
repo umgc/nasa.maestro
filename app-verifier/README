@@ -1,0 +1,56 @@
+
+#Introduction
+The web app known as format_test provide functionalities of creating new task, upload docx from local to server side, converting docx to pdf, converting pdf to png, and comparing two images in png format.
+
+
+#structure of directory achitecture of the web app
+
+--nasa.maestro.verifer
+  ---format_test
+     ---node_modeules
+     ---png
+     ---projects
+     ---src
+     ---test
+     ---test-demo
+     ---uploads
+     ---video
+     ---views
+     ---package.json
+     ---package-lock.json
+     ---README
+
+  ./foramt_test/src: all node.js including all async functions
+  ./foramt_test/test: mocha test *.sepc.js
+  ./foramt_test/test-demo: demo test for async functions
+  ./foramt_test/uploads: default directory storing temporary files which are uploaded from client sides.
+  ./foramt_test/video: help video
+  ./foramt_test/views: *.ejs files are HTML templates, which are developed under express.js and REACT framework
+
+
+
+# start web application:
+
+
+1. Direct into the directory format_test
+
+2. Launch the web by "npm start"
+
+
+#launch mocha test
+
+
+1. Direct into the directory docker_api
+
+2. then move one of *.spec.js file form ./test/pass to ./test
+
+3. launch the web by "npm test"
+
+
+
+# watch help video
+
+Direct to the directory format_test/video. In this direcotry, some video show all operations provided by this web application
+
+
+
