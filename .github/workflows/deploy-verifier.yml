@@ -7,7 +7,6 @@ on:
     branches: [master]
     tags:
       - '*'
-
 jobs:
   deploy-heroku:
     runs-on: ubuntu-latest
@@ -20,6 +19,7 @@ jobs:
         run: heroku container:login
 
       - name: Build and push
+        working-directory: ./app-verifier
         env:
           HEROKU_API_KEY: ${{ secrets.HEROKU_API_TOKEN }}
         run: heroku container:push web -a appdev-nasa-maestro-verifier
@@ -28,16 +28,17 @@ jobs:
           HEROKU_API_KEY: ${{ secrets.HEROKU_API_TOKEN }}
         run: heroku container:release web -a appdev-nasa-maestro-verifier
 
-    # if the push to master has tags will rebuild and push new server docker container
-    deploy-docker:
+  # if the push to master has tags will rebuild and push new server docker container
+  deploy-docker:
       if: contains(github.ref, 'refs/tags/v')
       runs-on: ubuntu-latest
       steps:
         - uses: actions/checkout@master
         - name: Publish to Registry
-          uses: HurricanKai/Publish-Docker-Github-Action@master
+          uses: elgohr/Publish-Docker-Github-Action@master
           with:
             name: umgccaps/nasa.maestro.verifier
             username: umgccaps
             password: ${{ secrets.DOCKER_PASSWORD }}
             tagging: true
+            workdir: app-verifier
