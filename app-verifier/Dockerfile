@@ -15,4 +15,4 @@ RUN npm run ng build --prod --output-path=./dist/public
 
 WORKDIR /usr/src/app/dist/public
 
-CMD ["npm", "run-script", "start-docker-app-server"]
+CMD ["npm", "run-script", "start-docker-server"]
