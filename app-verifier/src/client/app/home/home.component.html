@@ -1,0 +1,29 @@
+<h1>Compare a two documents</h1>
+
+<div>
+  <h2>Imagine A</h2>
+  Select Imagine <input [(ngModel)]="fileA" type="file" required observeFiles />
+</div>
+
+<div>
+  <h2>Imagine B</h2>
+  Select Imagine <input [(ngModel)]="fileB" type="file" required observeFiles />
+</div>
+
+<button (click)="submitForAnalysis()">Submit for analysis</button>
+
+<div
+  fxLayout="row"
+  fxLayoutAlign="space-between start"
+  style="max-height: 600px; overflow-x: auto;"
+>
+  <div fxFlex="30">
+    <img [attr.src]="imageA" />
+  </div>
+  <div fxFlex="30">
+    <img [attr.src]="imageB" />
+  </div>
+  <div fxFlex="30">
+    <img [attr.src]="diff" />
+  </div>
+</div>

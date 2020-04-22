@@ -1,40 +1,27 @@
-![NASA HUD TEST](https://github.com/umgc/nasa.hud/workflows/NASA%20HUD%20TEST/badge.svg)
-![NASA HUD CI](https://github.com/umgc/nasa.hud/workflows/NASA%20HUD%20CI/badge.svg)
-![NASA HUD CD](https://github.com/umgc/nasa.hud/workflows/NASA%20HUD%20CD/badge.svg)
-![Sonarcloud Status](https://sonarcloud.io/api/project_badges/measure?project=umgc_nasa.hud&metric=coverage)
+# NasaMaestro
 
-![Sonarcloud Quality](https://sonarcloud.io/api/project_badges/quality_gate?project=umgc_nasa.hud)
+This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 9.1.2.
 
-# NASA Document Verifier
+## Development server
 
-This project is mono repo that contains both frontend client and backend server located in the respective directory.
+Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
 
-## Test and Staging
+## Code scaffolding
 
-The application has automated testing hosted through Github Actions ... see .github/workflows for workflow actions.
+Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
 
-For Code Coverage Report view [Sonar Dashboard](https://sonarcloud.io/dashboard?id=umgc_nasa.hud)
+## Build
 
-The project is staged at
-
-- [NASA HUD Staging](https://appdev-nasa-hudweb.herokuapp.com/)
-- [NASA HUD API Server](https://appdev-nasa-hudapi.herokuapp.com/)
-
-## Publishing and Storage
-
-Merging to the release branch with a version tag:
-
-stores the image to the [Capstone DockerHub](https://hub.docker.com/u/umgccaps)
-publishes the application to the [NASA HUB Web](https://app-nasa-hudweb.herokuapp.com/)
-
-## Local Development Server
-
-- Requires DEV to update
+Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory. Use the `--prod` flag for a production build.
 
 ## Running unit tests
 
-- Requires DEV to update
+Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
+
+## Running end-to-end tests
+
+Run `ng e2e` to execute the end-to-end tests via [Protractor](http://www.protractortest.org/).
 
 ## Further help
 
-To get more help on the NASA HUD project visit the project documentation site at [Capstone Docs](https://1drv.ms/u/s!Aq84NT9YxlnRbqHR5Yb0sbBER6g?e=thSiKA).
+To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI README](https://github.com/angular/angular-cli/blob/master/README.md).

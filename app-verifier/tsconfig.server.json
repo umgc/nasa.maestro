@@ -1,0 +1,12 @@
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "outDir": "dist",
+    "importHelpers": false,
+    "baseUrl": "./src/server",
+    "lib": ["es2015", "DOM"],
+    "types": ["node"],
+    "esModuleInterop": true
+  },
+  "include": ["src/server/**/*.ts", "src/server/**/*.d.ts"]
+}

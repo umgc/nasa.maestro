@@ -1,0 +1,41 @@
+name: Publish NASA Maestro Verifier
+
+# Controls when the action will run. Triggers the workflow on push or pull request
+# events but only for the release branch
+on:
+  push:
+    branches: [release]
+    tags:
+      - '*'
+
+jobs:
+  deploy-docker:
+    if: contains(github.ref, 'refs/tags/v')
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@master
+      - name: Publish to Registry
+        uses: HurricanKai/Publish-Docker-Github-Action@master
+        with:
+          name: umgccaps/umgc.city.frontend
+          username: ${{ secrets.DOCKER_USER }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
+          tagging: true
+
+  deploy-heroku:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v1
+      - name: Login to Heroku Container registry
+        env:
+          HEROKU_API_KEY: ${{ secrets.HEROKU_API_TOKEN }}
+          HEROKU_APP_NAME: ${{ secrets.HEROKU_WEB_NAME }}
+        run: heroku container:login
+      - name: Build and push
+        env:
+          HEROKU_API_KEY: ${{ secrets.HEROKU_API_TOKEN }}
+        run: heroku container:push -a ${{ secrets.HEROKU_WEB_NAME }} web
+      - name: Release
+        env:
+          HEROKU_API_KEY: ${{ secrets.HEROKU_API_TOKEN }}
+        run: heroku container:release web -a ${{ secrets.HEROKU_WEB_NAME }}

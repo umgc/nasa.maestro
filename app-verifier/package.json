@@ -1,70 +1,69 @@
 {
-  "name": "docker_api",
+  "name": "nasa-maestro-verifier",
   "version": "0.0.0",
-  "description": "Dockerized WebAPI",
-  "main": "./src/server.js",
   "type": "module",
   "scripts": {
-    "start": "nodemon --experimental-modules  ./src/server.js",
-    "test": "mocha --no-config --timeout 10000 ",
-    "serve": "node ./src/server.js",
-    "debug": "node --inspect-brk ./dist/server.js",
-    "lint": "eslint . --color",
-    "lint:fix": "eslint . --color --fix"
+    "ng": "ng",
+    "start": "ng serve",
+    "build": "ng build",
+    "test": "ng test --code-coverage  --watch=false",
+    "lint": "ng lint",
+    "e2e": "ng e2e",
+    "start-docker-server": "node --experimental-modules ./dist/app.js",
+    "start-docker-app-server": "PORT=8626 node --experimental-modules ./dist/app.js",
+    "compile-server": "tsc --p ./tsconfig.server.json",
+    "compile-server-docker": "tsc --p ./tsconfig.server-docker.json"
   },
-  "author": "Alberto L. Bonfiglio",
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/xOPERATIONS/maestro.git"
-  },
-  "license": "ISC",
-  "eslintIgnore": [
-    "node_modules"
-  ],
-  "standard": {
-    "env": [
-      "mocha"
-    ]
-  },
-  "mocha": {
-    "diff": true,
-    "extension": [
-      "js"
-    ],
-    "opts": false,
-    "package": "./package.json",
-    "reporter": "spec",
-    "slow": 75,
-    "timeout": 2000,
-    "ui": "bdd",
-    "spec": "test/*.spec.js",
-    "watch-files": [
-      "./app/*.js",
-      "./test/*.spec.js"
-    ],
-    "watch-ignore": [
-      "./node_modules/**"
-    ]
-  },
+  "private": true,
   "dependencies": {
-    "awilix": "^4.2.5",
+    "@angular/animations": "~9.1.2",
+    "@angular/common": "~9.1.2",
+    "@angular/compiler": "~9.1.2",
+    "@angular/core": "~9.1.2",
+    "@angular/cdk": "9.2.1",
+    "@angular/forms": "~9.1.2",
+    "@angular/flex-layout": "9.0.0-beta.29",
+    "@angular/platform-browser": "~9.1.2",
+    "@angular/platform-browser-dynamic": "~9.1.2",
+    "@angular/router": "~9.1.2",
+    "awilix": "^4.2.6",
     "body-parser": "^1.19.0",
     "cors": "^2.8.5",
     "express": "^4.17.1",
-    "express-fileupload": "^1.1.6",
-    "lodash": "^4.17.15",
+    "express-fileupload": "^1.1.7-alpha.3",
+    "lodash": "4.17.15",
     "pdf-image": "^2.0.0",
+    "rxjs": "~6.5.4",
+    "tslib": "^1.10.0",
+    "typescript": "~3.8.3",
     "unoconv-promise": "^1.0.8",
-    "uuidv4": "^6.0.7"
+    "uuidv4": "^6.0.7",
+    "zone.js": "~0.10.2",
+    "@types/node": "^12.11.1",
+    "@types/express": "4.17.6",
+    "@types/express-fileupload": "^1.1.3",
+    "@types/lodash": "^4.14.150"
   },
   "devDependencies": {
-    "chai": "^4.2.0",
-    "chai-http": "^4.3.0",
-    "eslint": "^6.8.0",
-    "mocha": "^7.1.1",
-    "mocha-junit-reporter": "^1.23.3",
-    "nodemon": "^2.0.3",
-    "sinon": "^9.0.2",
-    "webpack": "^4.42.1"
+    "@angular-devkit/build-angular": "~0.901.2",
+    "@angular/cli": "~9.1.2",
+    "@angular/compiler-cli": "~9.1.2",
+    "@angular/language-service": "~9.1.2",
+    "@types/jasmine": "~3.5.0",
+    "@types/jasminewd2": "~2.0.3",
+    "codelyzer": "^5.1.2",
+    "jasmine-core": "~3.5.0",
+    "jasmine-spec-reporter": "~4.2.1",
+    "karma": "~4.4.1",
+    "karma-chrome-launcher": "~3.1.0",
+    "karma-coverage-istanbul-reporter": "~2.1.0",
+    "karma-jasmine": "~3.0.1",
+    "karma-jasmine-diff-reporter": "^2.0.0",
+    "karma-jasmine-html-reporter": "^1.4.2",
+    "karma-mocha-reporter": "^2.2.5",
+    "protractor": "~5.4.3",
+    "puppeteer": "^3.0.0",
+    "ts-node": "~8.3.0",
+    "tslint": "~6.1.0"
   }
 }
