@@ -18,14 +18,16 @@ jobs:
           HEROKU_APP_NAME: appdev-nasa-maestro-verifier
         run: heroku container:login
 
-      - name: Build and push
-        working-directory: ./app-verifier
+      - name: Build
         env:
           HEROKU_API_KEY: ${{ secrets.HEROKU_API_TOKEN }}
+        working-directory: ./app-verifier/
         run: heroku container:push web -a appdev-nasa-maestro-verifier
+      
       - name: Release
         env:
           HEROKU_API_KEY: ${{ secrets.HEROKU_API_TOKEN }}
+        working-directory: ./app-verifier/  
         run: heroku container:release web -a appdev-nasa-maestro-verifier
 
   # if the push to master has tags will rebuild and push new server docker container
