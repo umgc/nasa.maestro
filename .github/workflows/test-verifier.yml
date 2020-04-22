@@ -32,12 +32,14 @@ jobs:
       # Runs a single command using the runners shell
       - name: Use Node.js
         uses: actions/setup-node@v1
-
+      
+      - name: Install packages
+        working-directory: ./app-verifier 
       - run: npm ci
       - run: npm run test
 
       - name: fix code coverage paths
-        working-directory: ./coverage
+        working-directory: ./app-verifier/coverage
         run: sed -i 's/\/home\/runner\/work\/nasa.maestro\/nasa.maestro\//\/github\/workspace\//g' lcov.info
 
       - name: SonarCloud Scan
