@@ -47,6 +47,13 @@ module.exports = function (config) {
         flags: ["--no-sandbox"],
       },
     },
+    webpack: {
+      node: {
+        fs: "empty",
+        child_process: "empty",
+        readline: "empty",
+      },
+    },
     port: 9876,
     colors: true,
     logLevel: config.LOG_INFO,

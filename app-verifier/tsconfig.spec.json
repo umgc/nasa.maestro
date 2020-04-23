@@ -1,7 +1,11 @@
 {
   "extends": "./tsconfig.json",
   "compilerOptions": {
+    "baseUrl": "./src/client",
     "outDir": "./out-tsc/spec",
+    "importHelpers": false,
+    "esModuleInterop": true,
+
     "types": ["jasmine", "node"]
   },
   "files": ["src/test.ts", "src/client/polyfills.ts"],
