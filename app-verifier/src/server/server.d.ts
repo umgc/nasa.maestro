@@ -13,6 +13,7 @@ export interface IComparisonResult {
   imageASize: number;
   imageBSize: number;
   pixelDiff: number;
+  diffSize: number;
   percentDiff: string;
 }
 
