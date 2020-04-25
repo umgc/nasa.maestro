@@ -1,15 +1,15 @@
 <h1>Compare Two Documents</h1>
 
-<div id='fileA'>
+<div>
   <h2>Document A</h2>
-  Select Document <input [(ngModel)]="fileA" type="file" required observeFiles />
+  Select Document <input type="file" id="fileA" (change)="onChangeFile(0, $event.target.files)" />
 </div>
 
-<div id='fileB'>
+<div>
   <h2>Document B</h2>
-  Select Document <input [(ngModel)]="fileB" type="file" required observeFiles />
+  Select Document <input  id='fileB' type="file" (change)="onChangeFile(1, $event.target.files)"/>
 </div>
-
+-->
 <div id='button'>
-  <button (click)="submitForAnalysis()">Submit for analysis</button>
+  <button (click)="submitForAnalysis($event)">Submit for analysis</button>
 </div>

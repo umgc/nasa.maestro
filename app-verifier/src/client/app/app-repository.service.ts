@@ -2,6 +2,8 @@ import { Injectable } from '@angular/core';
 import { Resolve } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
 import { ConversionResponse } from './model/conversionResponse';
+import { Observable } from 'rxjs';
+import { takeUntil, debounceTime, distinctUntilChanged, tap, map, catchError } from 'rxjs/operators';
 
 @Injectable({ providedIn: 'root' })
 export class AppRepoService implements Resolve<string[]> {
@@ -41,6 +43,7 @@ export class AppRepoService implements Resolve<string[]> {
     // prevent any name collision on the server.
     formData.append('docs', fileA, `fileA-${Math.round(Math.random() * 100)}`);
     formData.append('docs', fileB, `fileB-${Math.round(Math.random() * 100)}`);
+
     try {
       const result = (await this.httpClient
         .post('/api/docx/checkDifference', formData)
@@ -52,6 +55,29 @@ export class AppRepoService implements Resolve<string[]> {
       console.log(e);
     }
   }
+
+  public uploadAndCompare2(fileA: File, fileB: File): Observable<ConversionResponse> {
+    const formData = new FormData();
+    // Memorize the filenames so we can change them out for safe names for
+    // the server to process.
+    console.log(fileA, fileB);
+
+    //const memorizeFileNames = { fileA: fileA.name, fileB: fileB.name };
+
+    // Edge-case, if files are actual named 'FileA' and 'FileB' random will
+    // prevent any name collision on the server.
+    formData.append('docs', fileA);
+    formData.append('docs', fileB);
+
+    return this.httpClient
+      .post<ConversionResponse>('/api/docx/checkDifference', formData)
+        .pipe(
+          tap( (res) => console.log('this is whayt i get: ', res) ),
+          map( (res) => res as ConversionResponse)
+        );
+
+  }
+
 
   async uploadAndConvertDOCX(
     fileA

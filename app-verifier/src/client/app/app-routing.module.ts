@@ -6,12 +6,8 @@ import { CompareDocxComponent } from './compareDocx/compareDocx.component';
 import { ConvertDocxComponent } from './convertDocx/convertDocx.component';
 import { ResultsComponent } from './results/results.component';
 import { ValidateDocxComponent } from './validateDocx/validateDocx.component';
-import { homeComponent } from './home/home.component';
+import { HomeComponent } from './home/home.component';
 
-@NgModule({
-  imports: [RouterModule.forRoot(routes)],
-  exports: [RouterModule],
-})
 
 const routes: Routes = [
   {
@@ -21,8 +17,8 @@ const routes: Routes = [
   },
   {
     path: 'home',
-    component: homeComponent,
-    resolve: {projectNames: AppRepoService},
+    component: HomeComponent,
+    resolve: { projectNames: AppRepoService },
   },
   {
     path: 'compareDocx',
@@ -45,5 +41,11 @@ const routes: Routes = [
     resolve: { projectNames: AppRepoService },
   }
 ];
+@NgModule({
+  imports: [RouterModule.forRoot(routes)],
+  exports: [RouterModule],
+})
+
+
 
 export class AppRoutingModule {}

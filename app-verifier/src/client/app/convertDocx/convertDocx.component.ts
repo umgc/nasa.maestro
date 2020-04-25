@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { AppRepoService } from 'app/app-repository.service';
 import { SharedService } from '../shared.service';
 import { Location } from '@angular/common';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-convertDocx-component',
@@ -15,7 +16,7 @@ export class ConvertDocxComponent implements OnInit {
   constructor(
     private repoService: AppRepoService,
     private sharedService: SharedService,
-    private location: Location,
+    private router: Router
   ) {}
 
   ngOnInit(): void {}
@@ -33,8 +34,8 @@ export class ConvertDocxComponent implements OnInit {
     else {
       this.sharedService.nextMessage(results);
     }
-    
+
     this.sharedService.setPreviousPage('/convertDocx');
-    this.location.navigate('/results');
+    this.router.navigate(['/results']);
   }
 }

@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { SharedService } from '../shared.service';
-import { Location } from '@angular/common';
+import { Router } from '@angular/router';
+import { BehaviorSubject } from 'rxjs';
 
 @Component({
   selector: 'app-results-component',
@@ -12,21 +13,28 @@ export class ResultsComponent implements OnInit {
   message;
   returnPage;
 
+  public message$ = new BehaviorSubject<string>('');
+
   constructor(
     private sharedService: SharedService,
-    private location: Location
+    private router: Router
   ) {}
 
   ngOnInit(): void {
-    this.sharedService.sharedMessage.subscribe(message => this.message = message);
+    this.sharedService.sharedMessage
+      .subscribe( message => this.message$.next(message)
+          //this.message = message
+        );
+
     this.sharedService.sharedPreviousPage.subscribe(previousPage => this.returnPage = previousPage);
 
-    var divElement = angular.element(document.querySelector('.results'));
-    var htmlElement = angular.element(this.message);
-    divElement.append(htmlElement);
+
+    //var divElement = angular.element(document.querySelector('.results'));
+    //var htmlElement = angular.element(this.message);
+    //divElement.append(htmlElement);
   }
 
   goBack(): void {
-    this.location.navigate(this.returnPage);
+    this.router.navigate([this.returnPage]);
   }
 }

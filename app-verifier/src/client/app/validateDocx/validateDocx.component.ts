@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { AppRepoService } from 'app/app-repository.service';
 import { SharedService } from '../shared.service';
 import { Location } from '@angular/common';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-validateDocx-component',
@@ -15,12 +16,12 @@ export class ValidateDocxComponent implements OnInit {
   constructor(
     private repoService: AppRepoService,
     private sharedService: SharedService,
-    private location: Location,
+    private router: Router,
   ) {}
 
   ngOnInit(): void {}
 
-  async submitForValidation(): s {
+  async submitForValidation()  {
     console.log(this.fileA);
     const results = await this.repoService.uploadAndValidateDOCX(
       this.fileA
@@ -35,6 +36,6 @@ export class ValidateDocxComponent implements OnInit {
     }
 
     this.sharedService.setPreviousPage('/validateDocx');
-    this.location.navigate('/results');  
+    this.router.navigate(['/results']);
   }
 }
