@@ -1,29 +1,11 @@
-<h1>Compare a two documents</h1>
-
 <div>
-  <h2>Imagine A</h2>
-  Select Imagine <input [(ngModel)]="fileA" type="file" required observeFiles />
+  <h1>Welcome to NASA Meastro Format Test Tool</h1>
+  <h1>(MFTT)</h1>
+  <h2>By: Alberto Boniglio, Kenya Foster, Beatrice Oluwabuyi, Jacquetta Reid, Rick Stuart, and Tiezheng Yuan</h2>
 </div>
 
 <div>
-  <h2>Imagine B</h2>
-  Select Imagine <input [(ngModel)]="fileB" type="file" required observeFiles />
-</div>
-
-<button (click)="submitForAnalysis()">Submit for analysis</button>
-
-<div
-  fxLayout="row"
-  fxLayoutAlign="space-between start"
-  style="max-height: 600px; overflow-x: auto;"
->
-  <div fxFlex="30">
-    <img [attr.src]="imageA" />
-  </div>
-  <div fxFlex="30">
-    <img [attr.src]="imageB" />
-  </div>
-  <div fxFlex="30">
-    <img [attr.src]="diff" />
-  </div>
+  <button (click)="onSelect(compare)">Compare DOCX</button>
+  <button (click)="onSelect(convert)">Convert DOCX</button>
+  <button (click)="onSelect(validate)">Validate DOCX</button>
 </div>

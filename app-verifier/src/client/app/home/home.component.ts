@@ -7,12 +7,9 @@ import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.css'],
 })
-export class HomeComponent implements OnInit {
-  fileA: File;
-  fileB: File;
-  imageA: SafeResourceUrl;
-  imageB: SafeResourceUrl;
-  diff: SafeResourceUrl;
+export class homeComponent implements OnInit {
+  selection: Text
+  
   constructor(
     private repoService: AppRepoService,
     private sanitizer: DomSanitizer
@@ -20,25 +17,15 @@ export class HomeComponent implements OnInit {
 
   ngOnInit(): void {}
 
-  async submitForAnalysis(): Promise<void> {
-    console.log(this.fileA);
-    console.log(this.fileB);
-    const results = await this.repoService.uploadAndCompare(
-      this.fileA,
-      this.fileB
-    );
-
-    if (!results) {
-      return;
+  onSelect(selection): void {
+    if(selection == 'compare') {
+      this.router.navigate(['/compareDocx']);
     }
-    this.imageA = this.sanitizer.bypassSecurityTrustResourceUrl(
-      `http://${results.imageLinks[0].url}`
-    );
-    this.imageB = this.sanitizer.bypassSecurityTrustResourceUrl(
-      `http://${results.imageLinks[1].url}`
-    );
-    this.diff = this.sanitizer.bypassSecurityTrustResourceUrl(
-      `http://${results.diffLink}`
-    );
+    else if(selection == 'convert'){
+      this.router.navigate(['/convertDocx']);
+    }
+    else {
+      this.router.navigate(['/validateDocx']);
+    }
   }
 }

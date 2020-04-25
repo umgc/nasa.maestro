@@ -52,4 +52,49 @@ export class AppRepoService implements Resolve<string[]> {
       console.log(e);
     }
   }
+
+  async uploadAndConvertDOCX(
+    fileA
+  ): Promise<ConversionResponse> {
+    var formData = new FormData();
+
+    const memorizeFileName = {
+      fileA : fileA.name
+    }
+
+    formData.append('doc', fileA, `fileA-${Math.round(Math.random() * 100)}`);
+
+    try {
+      const result = (await this.httpClient
+        .post('/api/docx/convertDocX', formData)
+        .toPromise()) as ConversionResponse;
+      console.log(result);
+      return result;
+    } catch(e) {
+      console.log(e);
+    }
+  }
+
+  async uploadAndValidateDOCX(
+    fileA
+  ): Promise<ConversionResponse> {
+    var formData = new FormData();
+
+    const memorizeFileName = {
+      fileA : fileA.name
+    }
+
+    formData.append('doc', fileA, `fileA-${Math.round(Math.random() * 100)}`);
+
+    try {
+      const result = (await this.httpClient
+        .post('/api/docx/validate', formData)
+        .toPromise()) as ConversionResponse;
+      console.log(result);
+      return result;
+    } catch(e) {
+      console.log(e);
+    }
+  }
+
 }
