@@ -1,11 +1,17 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
-import { compareDocxComponent } from './compareDocx/compareDocx.component';
-import { convertDocxComponent } from './convertDocx/convertDocx.component';
-import { resultsComponent } from './results/results.component';
-import { validateDocxComponent } from './validateDocx/validateDocx.component';
-import { homeComponent } from './home/home.component';
 import { AppRepoService } from './app-repository.service';
+
+import { CompareDocxComponent } from './compareDocx/compareDocx.component';
+import { ConvertDocxComponent } from './convertDocx/convertDocx.component';
+import { ResultsComponent } from './results/results.component';
+import { ValidateDocxComponent } from './validateDocx/validateDocx.component';
+import { homeComponent } from './home/home.component';
+
+@NgModule({
+  imports: [RouterModule.forRoot(routes)],
+  exports: [RouterModule],
+})
 
 const routes: Routes = [
   {
@@ -20,28 +26,24 @@ const routes: Routes = [
   },
   {
     path: 'compareDocx',
-    component: compareDocxComponent,
+    component: CompareDocxComponent,
     resolve: { projectNames: AppRepoService },
   },
   {
     path: 'convertDocx',
-    component: convertDocxComponent,
+    component: ConvertDocxComponent,
     resolve: { projectNames: AppRepoService },
   },
   {
     path: 'results',
-    component: resultsComponent,
+    component: ResultsComponent,
     resolve: { projectNames: AppRepoService },
   },
   {
     path: 'validateDocx',
-    component: validateDocxComponent,
+    component: ValidateDocxComponent,
     resolve: { projectNames: AppRepoService },
   }
 ];
 
-@NgModule({
-  imports: [RouterModule.forRoot(routes)],
-  exports: [RouterModule],
-})
 export class AppRoutingModule {}

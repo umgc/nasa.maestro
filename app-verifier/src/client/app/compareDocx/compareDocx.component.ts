@@ -1,18 +1,24 @@
 import { Component, OnInit } from '@angular/core';
 import { AppRepoService } from 'app/app-repository.service';
-import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
+import { SharedService } from '../shared.service';
+import { Location } from '@angular/common';
 
 @Component({
   selector: 'app-compareDocx-component',
   templateUrl: './compareDocx.component.html',
   styleUrls: ['./compareDocx.component.css'],
 })
-export class compareDocxComponent implements OnInit {
+
+export class CompareDocxComponent implements OnInit {
   fileA: File;
   fileB: File;
+  message: JSON;
+  resultsPage;
+
   constructor(
     private repoService: AppRepoService,
-    private sanitizer: DomSanitizer
+    private sharedService: SharedService,
+    private location: Location,
   ) {}
 
   ngOnInit(): void {}
@@ -26,14 +32,14 @@ export class compareDocxComponent implements OnInit {
     );
 
     if (!results) {
-      /* TODO
-        Send the user to the result page with a results failed message
-      */
+      this.sharedService.nextMessage('<h2>There was an error</h2>' +
+        '<h2>The comparison failed</h>');
     }
     else {
-      /* TODO
-        Send the user to the results page to display the JSON
-      */
+      this.sharedService.nextMessage(results);
     }
+
+    this.sharedService.setPreviousPage('/compareDocx');
+    this.location.navigate('/results');
   }
 }

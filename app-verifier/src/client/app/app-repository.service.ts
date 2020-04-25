@@ -16,7 +16,7 @@ export class AppRepoService implements Resolve<string[]> {
     if (!force && this.projectNames.length) {
       return this.projectNames;
     }
-    this.projectNames = ['Test Project 1', 'Test Project 2', 'Test Project 3'];
+    this.projectNames = ['compareDocx', 'convertDocx', 'validateDocx', 'results', 'home'];
     return await Promise.resolve(this.projectNames);
   }
 

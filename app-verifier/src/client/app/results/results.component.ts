@@ -1,29 +1,32 @@
 import { Component, OnInit } from '@angular/core';
-import { AppRepoService } from 'app/app-repository.service';
-import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
+import { SharedService } from '../shared.service';
+import { Location } from '@angular/common';
 
 @Component({
   selector: 'app-results-component',
   templateUrl: './results.component.html',
   styleUrls: ['./results.component.css'],
 })
-export class resultsComponent implements OnInit {
-  results: JSON;
-  sendingPageType: Text;
+
+export class ResultsComponent implements OnInit {
+  message;
+  returnPage;
+
   constructor(
-    private repoService: AppRepoService,
-    private sanitizer: DomSanitizer
+    private sharedService: SharedService,
+    private location: Location
   ) {}
 
   ngOnInit(): void {
-    /* TODO
-      Display the JSON file
-    */
+    this.sharedService.sharedMessage.subscribe(message => this.message = message);
+    this.sharedService.sharedPreviousPage.subscribe(previousPage => this.returnPage = previousPage);
+
+    var divElement = angular.element(document.querySelector('.results'));
+    var htmlElement = angular.element(this.message);
+    divElement.append(htmlElement);
   }
 
-  submitToReturn(): void {
-    /* TODO
-      Send the user back to the last page
-    */
+  goBack(): void {
+    this.location.navigate(this.returnPage);
   }
 }

@@ -1,17 +1,21 @@
 import { Component, OnInit } from '@angular/core';
 import { AppRepoService } from 'app/app-repository.service';
-import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
+import { SharedService } from '../shared.service';
+import { Location } from '@angular/common';
 
 @Component({
   selector: 'app-convertDocx-component',
   templateUrl: './convertDocx.component.html',
   styleUrls: ['./convertDocx.component.css'],
 })
-export class convertDocxComponent implements OnInit {
+
+export class ConvertDocxComponent implements OnInit {
   fileA: File;
+
   constructor(
     private repoService: AppRepoService,
-    private sanitizer: DomSanitizer
+    private sharedService: SharedService,
+    private location: Location,
   ) {}
 
   ngOnInit(): void {}
@@ -23,14 +27,14 @@ export class convertDocxComponent implements OnInit {
     );
 
     if (!results) {
-      /* TODO
-        Send the user to the result page with a results failed message
-      */
+      this.sharedService.nextMessage('<h2>There was an error</h2>' +
+        '<h2>The conversion failed</h>');
     }
     else {
-      /* TODO
-        Send the user to the results page to display the JSON
-      */
+      this.sharedService.nextMessage(results);
     }
+    
+    this.sharedService.setPreviousPage('/convertDocx');
+    this.location.navigate('/results');
   }
 }
