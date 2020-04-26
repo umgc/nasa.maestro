@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Resolve } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
 import { ConversionResponse } from './model/conversionResponse';
-import { Observable } from 'rxjs';
+import { Observable, BehaviorSubject } from 'rxjs';
 import { takeUntil, debounceTime, distinctUntilChanged, tap, map, catchError } from 'rxjs/operators';
 
 @Injectable({ providedIn: 'root' })
@@ -26,46 +26,9 @@ export class AppRepoService implements Resolve<string[]> {
     this.projectNames.push(projectName);
   }
 
-  async uploadAndCompare(
-    fileA: File,
-    fileB: File
-  ): Promise<ConversionResponse> {
-    var formData = new FormData();
-    // Memorize the filenames so we can change them out for safe names for
-    // the server to process.
-
-    const memorizeFileNames = {
-      fileA: fileA.name,
-      fileB: fileB.name,
-    };
-
-    // Edge-case, if files are actual named 'FileA' and 'FileB' random will
-    // prevent any name collision on the server.
-    formData.append('docs', fileA, `fileA-${Math.round(Math.random() * 100)}`);
-    formData.append('docs', fileB, `fileB-${Math.round(Math.random() * 100)}`);
-
-    try {
-      const result = (await this.httpClient
-        .post('/api/docx/checkDifference', formData)
-        .toPromise()) as ConversionResponse;
-      console.log(result);
-      return result;
-    } catch (e) {
-      // do something with error or rethrow.
-      console.log(e);
-    }
-  }
-
-  public uploadAndCompare2(fileA: File, fileB: File): Observable<ConversionResponse> {
+  public uploadAndCompare(fileA: File, fileB: File): Observable<ConversionResponse> {
     const formData = new FormData();
-    // Memorize the filenames so we can change them out for safe names for
-    // the server to process.
     console.log(fileA, fileB);
-
-    //const memorizeFileNames = { fileA: fileA.name, fileB: fileB.name };
-
-    // Edge-case, if files are actual named 'FileA' and 'FileB' random will
-    // prevent any name collision on the server.
     formData.append('docs', fileA);
     formData.append('docs', fileB);
 
@@ -78,49 +41,43 @@ export class AppRepoService implements Resolve<string[]> {
 
   }
 
+  public uploadAndConvert(file: File): Observable<ConversionResponse> {
+    const formData = new FormData;
+    console.log(file);
+    formData.append('docs', file);
 
-  async uploadAndConvertDOCX(
-    fileA
-  ): Promise<ConversionResponse> {
-    var formData = new FormData();
-
-    const memorizeFileName = {
-      fileA : fileA.name
-    }
-
-    formData.append('doc', fileA, `fileA-${Math.round(Math.random() * 100)}`);
-
-    try {
-      const result = (await this.httpClient
-        .post('/api/docx/convertDocX', formData)
-        .toPromise()) as ConversionResponse;
-      console.log(result);
-      return result;
-    } catch(e) {
-      console.log(e);
-    }
+    return this.httpClient
+      .post<ConversionResponse>('/api/docx/convertDocX', formData)
+        .pipe(
+          tap( (res) => console.log('Im getting/got: ', res) ),
+          map( (res) => res as ConversionResponse)
+        );
   }
 
-  async uploadAndValidateDOCX(
-    fileA
-  ): Promise<ConversionResponse> {
-    var formData = new FormData();
+  public uploadAndValidate(file: File): Observable<ConversionResponse> {
+    const formData = new FormData;
+    console.log(file);
+    formData.append('docs', file);
 
-    const memorizeFileName = {
-      fileA : fileA.name
-    }
-
-    formData.append('doc', fileA, `fileA-${Math.round(Math.random() * 100)}`);
-
-    try {
-      const result = (await this.httpClient
-        .post('/api/docx/validate', formData)
-        .toPromise()) as ConversionResponse;
-      console.log(result);
-      return result;
-    } catch(e) {
-      console.log(e);
-    }
+    return this.httpClient
+      .post<ConversionResponse>('/api/docx/validate', formData)
+        .pipe(
+          tap( (res) => console.log('Im getting/got: ', res) ),
+          map( (res) => res as ConversionResponse)
+        );
   }
 
+  private message = new BehaviorSubject('<h2>There was an error</h2>');
+  sharedMessage = this.message.asObservable();
+
+  private previousPage = new BehaviorSubject('/home');
+  sharedPreviousPage = this.previousPage.asObservable();
+
+  nextMessage(message) {
+    this.message.next(message)
+  }
+
+  setPreviousPage(previousPage) {
+    this.previousPage.next(previousPage);
+  }
 }

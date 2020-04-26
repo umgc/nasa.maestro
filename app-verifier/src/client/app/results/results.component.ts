@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { SharedService } from '../shared.service';
 import { Router } from '@angular/router';
 import { BehaviorSubject } from 'rxjs';
+import { AppRepoService } from 'app/app-repository.service';
 
 @Component({
   selector: 'app-results-component',
@@ -16,22 +16,16 @@ export class ResultsComponent implements OnInit {
   public message$ = new BehaviorSubject<string>('');
 
   constructor(
-    private sharedService: SharedService,
-    private router: Router
+    private router: Router,
+    private repoService : AppRepoService
   ) {}
 
   ngOnInit(): void {
-    this.sharedService.sharedMessage
-      .subscribe( message => this.message$.next(message)
-          //this.message = message
-        );
+    this.repoService.sharedMessage
+      .subscribe( message => this.message$.next(message));
 
-    this.sharedService.sharedPreviousPage.subscribe(previousPage => this.returnPage = previousPage);
-
-
-    //var divElement = angular.element(document.querySelector('.results'));
-    //var htmlElement = angular.element(this.message);
-    //divElement.append(htmlElement);
+    this.repoService.sharedPreviousPage
+      .subscribe(previousPage => this.returnPage = previousPage);
   }
 
   goBack(): void {
