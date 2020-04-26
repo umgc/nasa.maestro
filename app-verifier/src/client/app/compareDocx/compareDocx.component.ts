@@ -50,6 +50,7 @@ export class CompareDocxComponent implements OnInit, OnDestroy {
          this.repoService.nextMessage('<h2>There was an error</h2>' +
            '<h2>The comparison failed</h>');
        } else {
+        console.log(results);
         console.log(results.imageLinks[0].url);
         console.log(results.imageLinks[1].url);
         console.log(results.diffLink);
