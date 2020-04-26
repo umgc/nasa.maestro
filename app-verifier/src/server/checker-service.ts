@@ -109,6 +109,8 @@ export default class CheckerService {
     });
   }
 
+
+
   /**
    * performIMAnalisys.
    * @param {uuid} session The current session
@@ -139,6 +141,7 @@ export default class CheckerService {
         // we use the stderr as for dissimilar images imagemagik quirkly returns 1
         // and a non zero return code usually indicates an error
         const difference = +(proc.stderr as any).toString('utf8', 0, proc.stderr.length);
+
         const diffImageSize = this.getImageSize(output);
         retVal.status = proc.status;
         retVal.isIdentical = proc.status === 0;
@@ -147,6 +150,7 @@ export default class CheckerService {
         retVal.diffSize = diffImageSize;
         retVal.pixelDiff = difference;
         retVal.percentDiff = parseFloat(`${difference / diffImageSize}`).toFixed(4);
+
       }
       return retVal;
     } catch (err) {

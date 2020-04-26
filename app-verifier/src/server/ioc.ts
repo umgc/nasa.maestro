@@ -3,7 +3,6 @@ import awilix, { AwilixContainer } from 'awilix';
 import CheckerService from './checker-service.js';
 import DocXValidatorService from './docx-validator.js';
 import spawn from 'child_process';
-
 import Common from './common.js';
 import Unoconv from 'unoconv-promise';
 
@@ -19,7 +18,6 @@ export default class IOC {
       common: awilix.asClass(Common),
       checkService: awilix.asClass(CheckerService),
       docXService: awilix.asClass(DocXValidatorService),
-
       unoconv: awilix.asValue(Unoconv),
       spawn: awilix.asValue(spawn),
     });
