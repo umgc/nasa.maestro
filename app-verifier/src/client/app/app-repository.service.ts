@@ -71,6 +71,10 @@ export class AppRepoService implements Resolve<string[]> {
         );
   }
 
+  getImage(imageUrl: string): Observable<Blob> {
+    return this.httpClient.get(imageUrl, { responseType: 'blob' });
+  }
+
   private message = new BehaviorSubject('<h2>There was an error</h2>');
   sharedMessage = this.message.asObservable();
 

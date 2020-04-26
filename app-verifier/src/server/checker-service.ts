@@ -190,7 +190,7 @@ export default class CheckerService {
   async generateLinks(session: string, files: ISaveUpload[]): Promise<IGeneratedLink[]> {
     // loop through all files
     const linksArray = [];
-    let i = 0;
+    let i = 1;
     for (const f of files) {
       const value = {
         docx: f.name,

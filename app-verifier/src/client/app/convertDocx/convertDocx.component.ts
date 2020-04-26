@@ -45,9 +45,9 @@ export class ConvertDocxComponent implements OnInit {
           this.repoService.nextMessage('<h2>There was an error</h2>' +
             '<h2>The conversion failed</h>');
         } else {
-          console.log(results.data[0].link);
+          console.log(window.location.host);
 
-          const http = '<p>The converted document can be found here: <a href="http://' + results.data[0].link + '">Document</a></p>';
+          const http = `<p>The converted document can be found here: <a href="${window.location.protocol}//${ window.location.host}${results.data[0].link}">Document</a></p>`;
           this.repoService.nextMessage(http);
         }
         this.repoService.setPreviousPage('/convertDocx');
