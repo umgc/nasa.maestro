@@ -1,12 +1,11 @@
-'use strict';
-
+/*
 import chai from 'chai';
 import sinon from 'sinon';
 import UnoConv from 'unoconv-promise';
 import DocXValidatorService from './docx-validator';
 import Common from './common.js';
 
-/*
+
 describe('API', () => {
   // tslint:disable-next-line: indent
 	const sandbox = sinon.createSandbox();

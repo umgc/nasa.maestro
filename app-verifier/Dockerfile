@@ -1,4 +1,4 @@
-FROM umgccaps/nasa.maestro.verifier:latest
+FROM umgccaps/nasa.maestro.verifier.server:latest
 
 LABEL author="Johnny Lockhart"
 LABEL version="1.0"
