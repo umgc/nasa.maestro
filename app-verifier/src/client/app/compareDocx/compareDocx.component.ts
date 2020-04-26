@@ -50,7 +50,9 @@ export class CompareDocxComponent implements OnInit, OnDestroy {
          this.repoService.nextMessage('<h2>There was an error</h2>' +
            '<h2>The comparison failed</h>');
        } else {
-         this.repoService.nextMessage(results);
+        //needs to save images/image links in HTML readable format. 
+        const links = results.imageLinks;
+        this.repoService.nextMessage(links);
        }
        this.repoService.setPreviousPage('/compareDocx');
        this.router.navigate(['/results']);

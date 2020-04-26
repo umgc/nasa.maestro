@@ -12,6 +12,7 @@ import { AppRepoService } from 'app/app-repository.service';
 export class ResultsComponent implements OnInit {
   message;
   returnPage;
+  resultsHTML: string = '<p>An error has occured</p>';
 
   public message$ = new BehaviorSubject<string>('');
 
@@ -22,7 +23,9 @@ export class ResultsComponent implements OnInit {
 
   ngOnInit(): void {
     this.repoService.sharedMessage
-      .subscribe( message => this.message$.next(message));
+      .subscribe( message => this.message = message);
+
+    this.resultsHTML = this.message;
 
     this.repoService.sharedPreviousPage
       .subscribe(previousPage => this.returnPage = previousPage);

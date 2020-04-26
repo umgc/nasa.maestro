@@ -45,7 +45,9 @@ export class ConvertDocxComponent implements OnInit {
           this.repoService.nextMessage('<h2>There was an error</h2>' +
             '<h2>The conversion failed</h>');
         }else {
-          this.repoService.nextMessage(results);
+          //needs to get the single image and save it as the message in HTML
+          const img = results.imageLinks;
+          this.repoService.nextMessage(img);
         }
         this.repoService.setPreviousPage('/convertDocx');
         this.router.navigate(['/results']);

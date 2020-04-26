@@ -45,7 +45,12 @@ export class ValidateDocxComponent implements OnInit {
           this.repoService.nextMessage('<h2>There was an error</h2>' +
           '<h2>The conversion failed</h>');
         } else {
-          this.repoService.nextMessage(results);
+          //need to identify way to tell if the response if valid or not.
+          if(results.response.isValid === true) {
+            this.repoService.nextMessage('<p>The word file is valid</p>');
+          } else {
+            this.repoService.nextMessage('<p>The word file is invalid</p>');
+          }
         }
         this.repoService.setPreviousPage('/validateDocx');
         this.router.navigate(['/results']);

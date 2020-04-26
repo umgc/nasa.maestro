@@ -3,7 +3,7 @@ import { Resolve } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
 import { ConversionResponse } from './model/conversionResponse';
 import { Observable, BehaviorSubject } from 'rxjs';
-import { takeUntil, debounceTime, distinctUntilChanged, tap, map, catchError } from 'rxjs/operators';
+import { tap, map } from 'rxjs/operators';
 
 @Injectable({ providedIn: 'root' })
 export class AppRepoService implements Resolve<string[]> {
