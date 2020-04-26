@@ -46,6 +46,7 @@ export class ValidateDocxComponent implements OnInit {
           '<h2>The conversion failed</h>');
         } else {
           console.log(results.response.isValid.valueOf());
+          
           if(results.response.isValid.valueOf() === true) {
             this.repoService.nextMessage('<p>The word file is valid</p>');
           } else {

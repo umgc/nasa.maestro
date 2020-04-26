@@ -46,6 +46,7 @@ export class ConvertDocxComponent implements OnInit {
             '<h2>The conversion failed</h>');
         }else {
           console.log(results.imageLinks[0].url);
+          
           const http = '<p>The converted document can be found here: <a href="http://' + results.imageLinks[0].url + '">Document</a></p>';
           this.repoService.nextMessage(http);
         }

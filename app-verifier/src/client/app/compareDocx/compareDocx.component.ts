@@ -54,6 +54,7 @@ export class CompareDocxComponent implements OnInit, OnDestroy {
         console.log(results.imageLinks[1].url);
         console.log(results.diffLink);
         console.log(results.response.percentDiff.valueOf());
+        
         const http = 
           '<p>The first document is available as an image here: <a href="http://' + results.imageLinks[0].url + '">First Document</a></p>' +
           '<p>The second document is available as an image here: <a href="http://' + results.imageLinks[0].url + '">Second Document</a></p>' +
