@@ -4,8 +4,8 @@ import fs from 'fs';
 import Common from './common';
 import spawn from 'child_process';
 import Unoconv from 'unoconv-promise';
-import pdfImage from 'pdf-image';
 import { UploadedFile } from 'express-fileupload';
+
 import {
   ISaveUpload,
   IDocMetadata,
@@ -20,13 +20,11 @@ export default class CheckerService {
   private common: Common;
   private spawn: typeof spawn;
   private unoconv: Unoconv;
-  private pdf2imageService: typeof pdfImage;
 
   constructor(opts: any) {
     this.common = opts.common;
     this.unoconv = opts.unoconv;
     this.spawn = opts.spawn;
-    this.pdf2imageService = opts.pdf2imageService;
     console.log('Checker has initd');
   }
 
@@ -45,7 +43,6 @@ export default class CheckerService {
           sessionId: session,
           data: await this.generateLinks(session, pdfs),
         };
-        console.log('returning ', ret );
         return ret;
       }
     } catch (err) {
@@ -93,23 +90,23 @@ export default class CheckerService {
    * @return {Promise<any>} a promise
    */
   async convertPdfToImg(session: string, doc: IDocMetadata): Promise<string | void> {
-    console.log(
-      `Attempting conversion of: ./uploads/${session}/${doc.name}.pdf`
-    );
-    const opts = { '-quality': '100' };
-    const converter = new this.pdf2imageService.PDFImage(
-      `./uploads/${session}/${doc.name}.pdf`,
-      { convertOptions: opts, combinedImage: true }
-    );
-    return converter.convertFile().then(
-      (img) => {
-        console.log('Converted: ', img);
-        return img;
-      },
-      (err) => {
-        console.log(err);
+    console.log(`Attempting conversion of: ./uploads/${session}/${doc.name}.pdf`);
+
+    const file = `./uploads/${session}/${doc.name}.pdf`;
+    const output = `./uploads/${session}/${doc.name}.png`;
+    const args = ['+profile', '"icc"', '-density', '200', // careful here or may get out of cache memory
+      '-alpha', 'off', file, '-quality', '100', '-sharpen', '0x1.0', '-append',
+      output];
+    const opts = { env: process.env, killSignal: 'SIGKILL', stdio: ['inherit'] };
+    return new Promise<string | void>((resolve, reject) => {
+      const process = this.spawn.spawnSync('convert', args, opts as any);
+      if (process.status === 0) {
+        resolve(output);
+      } else {
+        console.log('Error converting PDF');
+        reject();
       }
-    );
+    });
   }
 
   /**
@@ -123,14 +120,9 @@ export default class CheckerService {
     const file0 = `./uploads/${session}/image-1.png`;
     const file1 = `./uploads/${session}/image-2.png`;
     const args = [
-      '-metric',
-      'AE',
-      '-fuzz',
-      '5%',
-      file0,
-      file1,
-      '-compose',
-      'src',
+      '-metric', 'AE', '-fuzz', '5%',
+      file0, file1,
+      '-compose', 'src',
       output,
     ];
 
@@ -146,27 +138,21 @@ export default class CheckerService {
       if (proc.stderr) {
         // we use the stderr as for dissimilar images imagemagik quirkly returns 1
         // and a non zero return code usually indicates an error
-        const difference = (proc.stderr as any).toString(
-          'utf8',
-          0,
-          proc.stderr.length
-        );
+        const difference = +(proc.stderr as any).toString('utf8', 0, proc.stderr.length);
         const diffImageSize = this.getImageSize(output);
         retVal.status = proc.status;
         retVal.isIdentical = proc.status === 0;
         retVal.imageASize = this.getImageSize(file0);
         retVal.imageBSize = this.getImageSize(file1);
-        retVal.pixelDiff = parseInt(difference);
-        retVal.percentDiff = parseFloat(
-          `${difference / diffImageSize}`
-        ).toFixed(4);
+        retVal.diffSize = diffImageSize;
+        retVal.pixelDiff = difference;
+        retVal.percentDiff = parseFloat(`${difference / diffImageSize}`).toFixed(4);
       }
       return retVal;
     } catch (err) {
       console.error(err);
     }
   }
-
   getImageSize(file: string): number {
     const args = ['-format', '%w %h', file];
     const retVal = {
