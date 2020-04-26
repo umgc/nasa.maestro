@@ -51,8 +51,12 @@ export class CompareDocxComponent implements OnInit, OnDestroy {
            '<h2>The comparison failed</h>');
        } else {
         //needs to save images/image links in HTML readable format. 
-        const links = results.imageLinks;
-        this.repoService.nextMessage(links);
+        const http = 
+          '<p>The first document is available as an image here: <a href="http://' + results.imageLinks[0].url + '">First Document</a></p>' +
+          '<p>The second document is available as an image here: <a href="http://' + results.imageLinks[0].url + '">Second Document</a></p>' +
+          '<p>Difference are highlighted in the image here: <a href="http//' + results.diffLink + '">Different Image</a></p>' +
+          '<p>The difference between the two documents is: ' + results.response.percentDiff + '%</p>'; 
+        this.repoService.nextMessage(http);
        }
        this.repoService.setPreviousPage('/compareDocx');
        this.router.navigate(['/results']);
