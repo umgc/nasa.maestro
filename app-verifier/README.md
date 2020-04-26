@@ -1,14 +1,14 @@
-# NasaMaestro
+# NasaMaestroVerifier
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 9.1.2.
 
-## Development server
+## Docker
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
+Run `docker run -it -p 3581:3581 umgccaps/nasa.maestro.verifier:latest` to download the latest version of the docker server and start the container.
 
-## Code scaffolding
+## UI Server
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+Run `npm start` to compile and start the server.
 
 ## Build
 
