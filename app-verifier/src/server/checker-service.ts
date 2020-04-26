@@ -39,10 +39,11 @@ export default class CheckerService {
           data: await this.performIMAnalisys(session),
         };
       } else {
-        return {
+        const ret = {
           sessionId: session,
           data: await this.generateLinks(session, pdfs),
         };
+        return ret;
       }
     } catch (err) {
       console.log(err);
@@ -88,16 +89,16 @@ export default class CheckerService {
    * @param {number} index The document index to rename the image
    * @return {Promise<any>} a promise
    */
-  async convertPdfToImg(session: string, doc: IDocMetadata): Promise<string | void>  {
-    console.log( `Attempting conversion of: ./uploads/${session}/${doc.name}.pdf` );
+  async convertPdfToImg(session: string, doc: IDocMetadata): Promise<string | void> {
+    console.log(`Attempting conversion of: ./uploads/${session}/${doc.name}.pdf`);
 
     const file = `./uploads/${session}/${doc.name}.pdf`;
     const output = `./uploads/${session}/${doc.name}.png`;
-    const args = [ '+profile', '"icc"', '-density', '200', // careful here or may get out of cache memory
-                   '-alpha', 'off', file, '-quality', '100', '-sharpen', '0x1.0', '-append',
-                   output];
+    const args = ['+profile', '"icc"', '-density', '200', // careful here or may get out of cache memory
+      '-alpha', 'off', file, '-quality', '100', '-sharpen', '0x1.0', '-append',
+      output];
     const opts = { env: process.env, killSignal: 'SIGKILL', stdio: ['inherit'] };
-    return new Promise<string | void> ( ( resolve, reject ) => {
+    return new Promise<string | void>((resolve, reject) => {
       const process = this.spawn.spawnSync('convert', args, opts as any);
       if (process.status === 0) {
         resolve(output);
@@ -139,7 +140,8 @@ export default class CheckerService {
       if (proc.stderr) {
         // we use the stderr as for dissimilar images imagemagik quirkly returns 1
         // and a non zero return code usually indicates an error
-        const difference = +(proc.stderr as any).toString( 'utf8', 0, proc.stderr.length );
+        const difference = +(proc.stderr as any).toString('utf8', 0, proc.stderr.length);
+
         const diffImageSize = this.getImageSize(output);
         retVal.status = proc.status;
         retVal.isIdentical = proc.status === 0;
@@ -147,14 +149,14 @@ export default class CheckerService {
         retVal.imageBSize = this.getImageSize(file1);
         retVal.diffSize = diffImageSize;
         retVal.pixelDiff = difference;
-        retVal.percentDiff = parseFloat( `${difference / diffImageSize}` ).toFixed(4);
+        retVal.percentDiff = parseFloat(`${difference / diffImageSize}`).toFixed(4);
+
       }
       return retVal;
     } catch (err) {
       console.error(err);
     }
   }
-
   getImageSize(file: string): number {
     const args = ['-format', '%w %h', file];
     const retVal = {
@@ -192,16 +194,17 @@ export default class CheckerService {
   async generateLinks(session: string, files: ISaveUpload[]): Promise<IGeneratedLink[]> {
     // loop through all files
     const linksArray = [];
-    let i = 0;
+    let i = 1;
     for (const f of files) {
       const value = {
         docx: f.name,
-        link: `<Host:port>/api/docx/getImage?sessionId=${session}&index=${i}`,
+        link: `/api/docx/getImage?sessionId=${session}&index=${i}`,
       };
       console.log(`Link created for Doc ${value.docx}: ${value.link}`);
       linksArray.push(value);
       i++;
     }
-    return linksArray;
+
+    return new Promise<IGeneratedLink[]>((resolve) => resolve(linksArray));
   }
 }

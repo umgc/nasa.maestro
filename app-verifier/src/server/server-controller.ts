@@ -97,11 +97,12 @@ export default class ServerController {
 
     const chkSvc = IOC.container.resolve<CheckerService>('checkService');
 
+    const files: UploadedFile[] = Array.isArray(request.files.docs)
+      ? request.files.docs
+      : [request.files.docs];
+
     try {
-      const result = chkSvc.processData(
-        request.files.docs as UploadedFile[],
-        false
-      );
+      const result = await chkSvc.processData(files, false );
       response.status(200).send(result);
     } catch (error) {
       response.status(500).send(error);

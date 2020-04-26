@@ -1,0 +1,10 @@
+<h1>Validate a DOCX File</h1>
+
+<div>
+  <h2>DOCX</h2>
+  Select DOCX <input type="file" id="file" (change)="onChangeFile(0, $event.target.files)" />
+</div>
+
+<div>
+  <button (click)="submitForValidation($event)">Submit for Validation</button>
+</div>

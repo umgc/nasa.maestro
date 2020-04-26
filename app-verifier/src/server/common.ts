@@ -18,15 +18,12 @@ export default class Common {
    * @param {any} files The files from the request upload
    * @return {[any]} an array of doc metadata
    */
-  async saveUploadedFiles(
-    session: string,
-    files: UploadedFile[]
-  ): Promise<ISaveUpload[]> {
+  async saveUploadedFiles( session: string, files: UploadedFile[] ): Promise<ISaveUpload[]> {
     const savedUploads: Array<ISaveUpload> = [];
 
     return new Promise((resolve, reject) => {
       try {
-        console.log('Saving uploaded files to session folder');
+        console.log('Saving uploaded files to session folder', files);
         // loop through all files
         _.forEach(_.keysIn(files), (key) => {
           const docx: UploadedFile = files[key];

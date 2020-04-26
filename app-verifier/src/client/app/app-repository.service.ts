@@ -1,7 +1,9 @@
 import { Injectable } from '@angular/core';
 import { Resolve } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
-import { ConversionResponse } from './model/conversionResponse';
+import { ConversionResponse, LinksResponse } from './model/conversionResponse';
+import { Observable, BehaviorSubject } from 'rxjs';
+import { tap, map } from 'rxjs/operators';
 
 @Injectable({ providedIn: 'root' })
 export class AppRepoService implements Resolve<string[]> {
@@ -16,7 +18,7 @@ export class AppRepoService implements Resolve<string[]> {
     if (!force && this.projectNames.length) {
       return this.projectNames;
     }
-    this.projectNames = ['Test Project 1', 'Test Project 2', 'Test Project 3'];
+    this.projectNames = ['compareDocx', 'convertDocx', 'validateDocx', 'results', 'home'];
     return await Promise.resolve(this.projectNames);
   }
 
@@ -24,32 +26,66 @@ export class AppRepoService implements Resolve<string[]> {
     this.projectNames.push(projectName);
   }
 
-  async uploadAndCompare(
-    fileA: File,
-    fileB: File
-  ): Promise<ConversionResponse> {
-    var formData = new FormData();
-    // Memorize the filenames so we can change them out for safe names for
-    // the server to process.
+  public uploadAndCompare(fileA: File, fileB: File): Observable<ConversionResponse> {
+    const formData = new FormData();
+    console.log(fileA, fileB);
+    formData.append('docs', fileA);
+    formData.append('docs', fileB);
 
-    const memorizeFileNames = {
-      fileA: fileA.name,
-      fileB: fileB.name,
-    };
+    return this.httpClient
+      .post<ConversionResponse>('/api/docx/checkDifference', formData)
+        .pipe(
+          tap( (res) => console.log('this is whayt i get: ', res) ),
+          map( (res) => res as ConversionResponse)
+        );
 
-    // Edge-case, if files are actual named 'FileA' and 'FileB' random will
-    // prevent any name collision on the server.
-    formData.append('docs', fileA, `fileA-${Math.round(Math.random() * 100)}`);
-    formData.append('docs', fileB, `fileB-${Math.round(Math.random() * 100)}`);
-    try {
-      const result = (await this.httpClient
-        .post('/api/docx/checkDifference', formData)
-        .toPromise()) as ConversionResponse;
-      console.log(result);
-      return result;
-    } catch (e) {
-      // do something with error or rethrow.
-      console.log(e);
-    }
+  }
+
+  public uploadAndConvert(file: File): Observable<LinksResponse> {
+    const formData = new FormData();
+    console.log(file);
+    formData.append('docs', file);
+
+    return this.httpClient
+      .post<LinksResponse>('/api/docx/convertDocX', formData)
+        .pipe(
+          tap( (res) => {
+            console.log('Im getting/got: ', res) ;
+          }),
+          map( (res) => {
+            return res as LinksResponse;
+           } )
+        );
+  }
+
+  public uploadAndValidate(file: File): Observable<ConversionResponse> {
+    const formData = new FormData();
+    console.log(file);
+    formData.append('docs', file);
+
+    return this.httpClient
+      .post<ConversionResponse>('/api/docx/validate', formData)
+        .pipe(
+          tap( (res) => console.log('Im getting/got: ', res) ),
+          map( (res) => res as ConversionResponse)
+        );
+  }
+
+  getImage(imageUrl: string): Observable<Blob> {
+    return this.httpClient.get(imageUrl, { responseType: 'blob' });
+  }
+
+  private message = new BehaviorSubject('<h2>There was an error</h2>');
+  sharedMessage = this.message.asObservable();
+
+  private previousPage = new BehaviorSubject('/home');
+  sharedPreviousPage = this.previousPage.asObservable();
+
+  nextMessage(message) {
+    this.message.next(message)
+  }
+
+  setPreviousPage(previousPage) {
+    this.previousPage.next(previousPage);
   }
 }

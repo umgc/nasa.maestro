@@ -1,0 +1,10 @@
+<h1>Convert DOCX to a PNG</h1>
+
+<div>
+  <h2>Document</h2>
+  Select Document <input type="file" id="file" (change)="onChangeFile(0, $event.target.files)" />
+</div>
+
+<div>
+  <button (click)="submitForConversion($event)">Submit for Conversion</button>
+</div>

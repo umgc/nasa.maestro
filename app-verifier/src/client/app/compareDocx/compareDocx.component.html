@@ -1,0 +1,15 @@
+<h1>Compare Two Documents</h1>
+
+<div>
+  <h2>Document A</h2>
+  Select Document <input type="file" id="fileA" (change)="onChangeFile(0, $event.target.files)" />
+</div>
+
+<div>
+  <h2>Document B</h2>
+  Select Document <input type="file" id='fileB'(change)="onChangeFile(1, $event.target.files)"/>
+</div>
+
+<div id='button'>
+  <button (click)="submitForAnalysis($event)">Submit for Analysis</button>
+</div>
