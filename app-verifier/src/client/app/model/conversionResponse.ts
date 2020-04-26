@@ -11,3 +11,13 @@ export class ConversionResponse {
   diffLink: string;
   imageLinks: Array<{ url: string }>;
 }
+
+
+export class Link {
+  docx: string;
+  link: string;
+ }
+export class LinksResponse {
+    data: Link[];
+    sessionId: string;
+}

@@ -37,7 +37,7 @@ export class CompareDocxComponent implements OnInit, OnDestroy {
     }
     console.log('loaded -->', files.item(0), this.fileA, this.fileB);
   }
-  
+
   public submitForAnalysis($event): void {
     this.subscribeToUploadService();
   }
@@ -46,20 +46,21 @@ export class CompareDocxComponent implements OnInit, OnDestroy {
     this.repoService.uploadAndCompare( this.fileA, this.fileB)
      .pipe(takeUntil(this.unsubscribe))
      .subscribe( results => {
-       if (!results) {
+      if (!results) {
          this.repoService.nextMessage('<h2>There was an error</h2>' +
            '<h2>The comparison failed</h>');
        } else {
+
         console.log(results.imageLinks[0].url);
         console.log(results.imageLinks[1].url);
         console.log(results.diffLink);
         console.log(results.response.percentDiff.valueOf());
-        
-        const http = 
+
+        const http =
           '<p>The first document is available as an image here: <a href="http://' + results.imageLinks[0].url + '">First Document</a></p>' +
           '<p>The second document is available as an image here: <a href="http://' + results.imageLinks[0].url + '">Second Document</a></p>' +
           '<p>Difference are highlighted in the image here: <a href="http//' + results.diffLink + '">Different Image</a></p>' +
-          '<p>The difference between the two documents is: ' + results.response.percentDiff.valueOf() + '%</p>'; 
+          '<p>The difference between the two documents is: ' + results.response.percentDiff.valueOf() + '%</p>';
         this.repoService.nextMessage(http);
        }
        this.repoService.setPreviousPage('/compareDocx');

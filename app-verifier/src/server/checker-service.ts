@@ -41,10 +41,12 @@ export default class CheckerService {
           data: await this.performIMAnalisys(session),
         };
       } else {
-        return {
+        const ret = {
           sessionId: session,
           data: await this.generateLinks(session, pdfs),
         };
+        console.log('returning ', ret );
+        return ret;
       }
     } catch (err) {
       console.log(err);
@@ -90,10 +92,7 @@ export default class CheckerService {
    * @param {number} index The document index to rename the image
    * @return {Promise<any>} a promise
    */
-  async convertPdfToImg(
-    session: string,
-    doc: IDocMetadata
-  ): Promise<string | void> {
+  async convertPdfToImg(session: string, doc: IDocMetadata): Promise<string | void> {
     console.log(
       `Attempting conversion of: ./uploads/${session}/${doc.name}.pdf`
     );
@@ -202,22 +201,20 @@ export default class CheckerService {
     }
   }
 
-  async generateLinks(
-    session: string,
-    files: ISaveUpload[]
-  ): Promise<IGeneratedLink[]> {
+  async generateLinks(session: string, files: ISaveUpload[]): Promise<IGeneratedLink[]> {
     // loop through all files
     const linksArray = [];
     let i = 0;
     for (const f of files) {
       const value = {
         docx: f.name,
-        link: `<Host:port>/api/docx/getImage?sessionId=${session}&index=${i}`,
+        link: `/api/docx/getImage?sessionId=${session}&index=${i}`,
       };
       console.log(`Link created for Doc ${value.docx}: ${value.link}`);
       linksArray.push(value);
       i++;
     }
-    return linksArray;
+
+    return new Promise<IGeneratedLink[]>((resolve) => resolve(linksArray));
   }
 }

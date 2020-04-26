@@ -18,7 +18,7 @@ export class ResultsComponent implements OnInit {
 
   constructor(
     private router: Router,
-    private repoService : AppRepoService
+    private repoService: AppRepoService
   ) {}
 
   ngOnInit(): void {

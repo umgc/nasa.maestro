@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Resolve } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
-import { ConversionResponse } from './model/conversionResponse';
+import { ConversionResponse, LinksResponse } from './model/conversionResponse';
 import { Observable, BehaviorSubject } from 'rxjs';
 import { tap, map } from 'rxjs/operators';
 
@@ -41,21 +41,25 @@ export class AppRepoService implements Resolve<string[]> {
 
   }
 
-  public uploadAndConvert(file: File): Observable<ConversionResponse> {
-    const formData = new FormData;
+  public uploadAndConvert(file: File): Observable<LinksResponse> {
+    const formData = new FormData();
     console.log(file);
     formData.append('docs', file);
 
     return this.httpClient
-      .post<ConversionResponse>('/api/docx/convertDocX', formData)
+      .post<LinksResponse>('/api/docx/convertDocX', formData)
         .pipe(
-          tap( (res) => console.log('Im getting/got: ', res) ),
-          map( (res) => res as ConversionResponse)
+          tap( (res) => {
+            console.log('Im getting/got: ', res) ;
+          }),
+          map( (res) => {
+            return res as LinksResponse;
+           } )
         );
   }
 
   public uploadAndValidate(file: File): Observable<ConversionResponse> {
-    const formData = new FormData;
+    const formData = new FormData();
     console.log(file);
     formData.append('docs', file);
 

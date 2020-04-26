@@ -28,9 +28,8 @@ export class ConvertDocxComponent implements OnInit {
     this.unsubscribe.complete();
   }
 
-  public onChangeFile(index, files:FileList){
+  public onChangeFile(index, files: FileList){
     this.file = files.item(0);
-    console.log('loaded -->', files.item(0), this.file);
   }
 
   public submitForConversion($event): void {
@@ -41,13 +40,14 @@ export class ConvertDocxComponent implements OnInit {
     this.repoService.uploadAndConvert( this.file)
       .pipe(takeUntil(this.unsubscribe))
       .subscribe( results => {
+        console.log('subscribeToUploadService --> ', results );
         if (!results) {
           this.repoService.nextMessage('<h2>There was an error</h2>' +
             '<h2>The conversion failed</h>');
-        }else {
-          console.log(results.imageLinks[0].url);
-          
-          const http = '<p>The converted document can be found here: <a href="http://' + results.imageLinks[0].url + '">Document</a></p>';
+        } else {
+          console.log(results.data[0].link);
+
+          const http = '<p>The converted document can be found here: <a href="http://' + results.data[0].link + '">Document</a></p>';
           this.repoService.nextMessage(http);
         }
         this.repoService.setPreviousPage('/convertDocx');
