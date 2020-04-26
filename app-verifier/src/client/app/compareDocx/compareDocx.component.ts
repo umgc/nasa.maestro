@@ -10,7 +10,6 @@ import { SafeUrl, DomSanitizer } from '@angular/platform-browser';
   templateUrl: './compareDocx.component.html',
   styleUrls: ['./compareDocx.component.css'],
 })
-
 export class CompareDocxComponent implements OnInit, OnDestroy {
   private unsubscribe: Subject<void> = new Subject();
   fileA: File;
@@ -31,8 +30,8 @@ export class CompareDocxComponent implements OnInit, OnDestroy {
     this.unsubscribe.complete();
   }
 
-  public onChangeFile(index, files: FileList ){
-    if (index === 0 ) {
+  public onChangeFile(index, files: FileList) {
+    if (index === 0) {
       this.fileA = files.item(0);
     } else {
       this.fileB = files.item(0);
@@ -44,19 +43,20 @@ export class CompareDocxComponent implements OnInit, OnDestroy {
     this.subscribeToUploadService();
   }
 
-  private subscribeToUploadService(): void{
-    this.repoService.uploadAndCompare( this.fileA, this.fileB)
-     .pipe(takeUntil(this.unsubscribe))
-     .subscribe( results => {
-      if (!results) {
-         this.repoService.nextMessage('<h2>There was an error</h2>' +
-           '<h2>The comparison failed</h>');
-       } else {
-
-        console.log(results.imageLinks[0].url);
-        console.log(results.imageLinks[1].url);
-        console.log(results.diffLink);
-        console.log(results.response.percentDiff.valueOf());
+  private subscribeToUploadService(): void {
+    this.repoService
+      .uploadAndCompare(this.fileA, this.fileB)
+      .pipe(takeUntil(this.unsubscribe))
+      .subscribe((results) => {
+        if (!results) {
+          this.repoService.nextMessage(
+            '<h2>There was an error</h2>' + '<h2>The comparison failed</h>'
+          );
+        } else {
+          console.log(results.imageLinks[0].url);
+          console.log(results.imageLinks[1].url);
+          console.log(results.diffLink);
+          console.log(results.response.percentDiff.valueOf());
 
         const http =
           '<p>The first document is available as an image here: <a href="http://' + results.imageLinks[0].url + '">First Document</a></p>' +
@@ -68,9 +68,5 @@ export class CompareDocxComponent implements OnInit, OnDestroy {
        this.repoService.setPreviousPage('/compareDocx');
        this.router.navigate(['/results']);
      });
-  }
-
-  private cleanURL(oldURL): SafeUrl {
-    return this.sanitizer.bypassSecurityTrustUrl(oldURL);
   }
 }
