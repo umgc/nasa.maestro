@@ -45,7 +45,7 @@ export class ConvertDocxComponent implements OnInit {
           this.repoService.nextMessage('<h2>There was an error</h2>' +
             '<h2>The conversion failed</h>');
         }else {
-          //needs to get the single image and save it as the message in HTML
+          console.log(results.imageLinks[0].url);
           const http = '<p>The converted document can be found here: <a href="http://' + results.imageLinks[0].url + '">Document</a></p>';
           this.repoService.nextMessage(http);
         }
