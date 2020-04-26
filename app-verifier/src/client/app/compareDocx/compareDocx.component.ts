@@ -1,8 +1,9 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, Sanitizer } from '@angular/core';
 import { AppRepoService } from 'app/app-repository.service';
 import { Subject, pipe } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { Router } from '@angular/router';
+import { SafeUrl, DomSanitizer } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-compareDocx-component',
@@ -18,6 +19,7 @@ export class CompareDocxComponent implements OnInit, OnDestroy {
   resultsPage: Text;
 
   constructor (
+    private sanitizer: DomSanitizer,
     private repoService: AppRepoService,
     private router: Router
   ) {}
@@ -59,12 +61,16 @@ export class CompareDocxComponent implements OnInit, OnDestroy {
         const http =
           '<p>The first document is available as an image here: <a href="http://' + results.imageLinks[0].url + '">First Document</a></p>' +
           '<p>The second document is available as an image here: <a href="http://' + results.imageLinks[0].url + '">Second Document</a></p>' +
-          '<p>Difference are highlighted in the image here: <a href="http//' + results.diffLink + '">Different Image</a></p>' +
-          '<p>The difference between the two documents is: ' + results.response.percentDiff.valueOf() + '%</p>';
+          '<p>Difference are highlighted in the image here: <a href="http://' + results.diffLink + '">Different Image</a></p>' +
+          '<p>The difference ration between the two documents is: ' + results.response.percentDiff.valueOf() + '</p>';
         this.repoService.nextMessage(http);
        }
        this.repoService.setPreviousPage('/compareDocx');
        this.router.navigate(['/results']);
      });
+  }
+
+  private cleanURL(oldURL): SafeUrl {
+    return this.sanitizer.bypassSecurityTrustUrl(oldURL);
   }
 }
